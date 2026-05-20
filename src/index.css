@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  --color-bugatti: #1DB954;
+  --color-bugatti-dark: #1aa34a;
+  
+  --color-gray-750: #2d3748;
+  --color-gray-850: #1a202c;
+  --color-gray-950: #0d1117;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-gray-100 bg-gray-900;
+  }
+}
+
+/* Scrollbar styling for that native app feel */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded-full;
+}
+

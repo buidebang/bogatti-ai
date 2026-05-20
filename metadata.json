@@ -1,0 +1,8 @@
+{
+  "name": "Bugatti AI",
+  "description": "A dark-themed, mobile-first Android-style AI chat app with a green Spotify-like aesthetic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
