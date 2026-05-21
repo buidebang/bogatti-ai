@@ -1,0 +1,8 @@
+textual>=0.8.0
+rich>=15.0.0
+httpx>=0.28.1
+pydantic>=2.13.4
+arabic-reshaper>=3.0.1
+python-bidi>=0.6.10
+sympy>=1.12
+pytest>=9.0.3
