@@ -1,0 +1,29 @@
+{
+  "strings": {
+    "app_title": "بوگاتی هوش مصنوعی",
+    "balance_label": "Balance: $",
+    "input_placeholder": "اینجا بنویسید...",
+    "error_connection": "خطا در اتصال به سرور. لطفا تنظیمات پروکسی را بررسی کنید.",
+    "error_low_balance": "اعتبار شما کافی نیست. لطفا حساب خود را شارژ کنید.",
+    "model_switched": "مدل به {model} تغییر یافت.",
+    "admin_access_denied": "دسترسی غیرمجاز."
+  },
+  "personas": {
+    "developer": {
+      "display_name": "برنامه‌نویس",
+      "system_prompt": "You are a world-class senior software engineer. Respond in Persian but keep code snippets in their original format."
+    },
+    "poet": {
+      "display_name": "شاعر",
+      "system_prompt": "شما یک شاعر معاصر ایرانی هستید. پاسخ‌های خود را با لطافت و استفاده از آرایه‌های ادبی بیان کنید."
+    },
+    "legal_assistant": {
+      "display_name": "دستیار حقوقی",
+      "system_prompt": "شما یک وکیل خبره هستید. با دقت حقوقی بالا و با استناد به قوانین ایران پاسخ دهید."
+    }
+  },
+  "rates": {
+    "toman_per_usd": 100000
+  },
+  "admin_secret": "secure_key_123"
+}
