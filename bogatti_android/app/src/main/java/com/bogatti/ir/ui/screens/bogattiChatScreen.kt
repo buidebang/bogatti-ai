@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bogatti.ir.ui.components.RichTextRenderer
 import com.bogatti.ir.ui.theme.*
 import com.bogatti.ir.ui.viewmodel.bogattiViewModel
 
@@ -181,7 +182,7 @@ fun ChatBubble(text: String, isUser: Boolean) {
                 .background(bgColor)
                 .padding(12.dp)
         ) {
-            Text(text = text, color = textColor)
+            RichTextRenderer(text = text, isUser = isUser)
         }
     }
 }

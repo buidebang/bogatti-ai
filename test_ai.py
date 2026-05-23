@@ -1,6 +1,8 @@
 import asyncio
+import pytest
 from ai_service import AIService
 
+@pytest.mark.asyncio
 async def test_ai_service():
     service = AIService()
     response = await service.get_response("GPT-4o", "openai", "Hello")
