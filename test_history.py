@@ -1,8 +1,10 @@
 import asyncio
+import pytest
 from main import BugattiApp
 import os
 import json
 
+@pytest.mark.asyncio
 async def test_history_persistence():
     app = BugattiApp()
     async with app.run_test() as pilot:
