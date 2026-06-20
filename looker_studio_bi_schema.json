@@ -1,0 +1,18 @@
+{
+  "looker_studio_bi_schema": {
+    "dashboard_name": "Lextit Target Acquisition Metrics Panel",
+    "primary_data_connector": "Google Search Console API Terminal Gateway",
+    "dimensions": ["Landing Page", "Query Date"],
+    "metrics": ["Impressions", "Clicks", "Click-Through Rate"],
+    "filtering_constraints_registry": [
+      {
+        "constraint_id": "regional_noise_isolation_protocol",
+        "action": "EXCLUDE",
+        "evaluation_field": "Country",
+        "operator": "EQUAL_TO",
+        "value": "Iran",
+        "rationale": "Filters development environmental noise and localized query variations to keep business metrics clean."
+      }
+    ]
+  }
+}

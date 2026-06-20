@@ -6,11 +6,7 @@ from lextit.ingestion import LextitMultimodalIngestionPipeline
 from lextit.defense import LextitSystemDefenseEngine
 import os
 
-app = FastAPI(
-    title="Lextit Patient Portal Cognitive Interface",
-    version="4.0.0-PROD",
-    description="Headless endpoints controlling core multimodal data ingestion pipelines, automated system defense tools, and direct WordPress synchronization engines."
-)
+app = FastAPI(title="Lextit Patient Portal Cognitive Interface Core", version="5.0.0-PROD")
 
 class PatientAcuityTier(str, enum.Enum):
     CRITICAL_RED = "CRITICAL_RED_EMERGENCY"
@@ -23,18 +19,18 @@ class MedicalAllergySeverity(str, enum.Enum):
     ANAPHYLAXIS = "SEVERE_LIFE_THREATENING_ANAPHYLAXIS"
 
 class ExplicitAllergyDeclaration(BaseModel):
-    chemical_family: str = Field(..., description="Target pharmacological class, e.g., Penicillins, Carbapenems.")
+    chemical_family: str = Field(..., description="Target pharmacological class, e.g., Penicillins, Sulfonamides.")
     symptomatic_response: str = Field(..., description="Physiological impact, e.g., bronchospasm, anaphylactic shock.")
     severity: MedicalAllergySeverity = Field(..., description="Determines defensive prescription blocks inside the system.")
 
 class PatientPortalMessageInput(BaseModel):
     message_id: str = Field(..., description="Global unique tracking transaction signature.")
-    patient_uid: str = Field(..., description="Secure alphanumeric token linking to patient baseline identity.")
-    physician_id: str = Field(..., description="Target medical provider identity key.")
-    raw_message_body: str = Field(..., description="Unstructured patient textual transmission.")
+    patient_uid: str = Field(..., description="Secure token linking to verified patient baseline profile.")
+    physician_id: str = Field(..., description="Target healthcare provider identity key.")
+    raw_message_body: str = Field(..., description="Unstructured textual message input.")
     declared_allergies: List[ExplicitAllergyDeclaration] = Field(default_factory=list)
     proposed_prescriptions: List[str] = Field(default_factory=list)
-    pertinent_negatives_declared: List[str] = Field(default_factory=list, description="Explicit verification metrics e.g., denies_chest_pain.")
+    pertinent_negatives_declared: List[str] = Field(default_factory=list, description="Must contain explicit validations, e.g., 'denies_chest_pain'.")
 
     @validator("raw_message_body")
     def sanitize_input_stream(cls, value: str) -> str:
@@ -45,24 +41,24 @@ class PatientPortalMessageInput(BaseModel):
 
 class LextitFailsafeExpertSystem:
     def __init__(self):
-        # Deterministic contraindication rules preventing clinical liability issues
+        # Explicit, deterministic rule configurations preventing prescription errors
         self.cross_reactivity_rules = {
-            "PENICILLINS": ["AMOXICILLIN", "AMPICILLIN", "PIPERACILLIN", "MEROPENEM", "IMIPENEM"]
+            "PENICILLINS": ["AMOXICILLIN", "AMPICILLIN", "PIPERACILLIN", "MEROPENEM", "IMIPENEM", "ERTAPENEM"]
         }
 
     def evaluate_omissions_and_safety(self, payload: PatientPortalMessageInput) -> Dict[str, Any]:
         evaluation = {"status": "PASSED", "flags": [], "routing": PatientAcuityTier.ADMINISTRATIVE_GREEN}
         body_lower = payload.raw_message_body.lower()
 
-        # 1. Anti-Omission Screening Loop
+        # 1. Anti-Omission Verification Loop
         mandatory_negatives = ["denies_chest_pain", "denies_shortness_of_breath"]
         for required_neg in mandatory_negatives:
             if required_neg not in payload.pertinent_negatives_declared:
                 evaluation["status"] = "FAILED_SAFETY_VALIDATION"
-                evaluation["flags"].append(f"OMISSION DETECTED: Lack of explicit safety declaration for [{required_neg}].")
+                evaluation["flags"].append(f"OMISSION ANOMALY DETECTED: Lack of explicit clinical confirmation for [{required_neg}].")
 
-        # 2. Real-Time Clinical Acuity Triage Logic
-        emergency_indicators = ["chest pain", "shortness of breath", "dropping sugar", "suicidal thoughts"]
+        # 2. Real-Time Emergency Priority Triage Router
+        emergency_indicators = ["chest pain", "shortness of breath", "dropping sugar", "suicidal thoughts", "cannot breathe"]
         if any(indicator in body_lower for indicator in emergency_indicators):
             evaluation["routing"] = PatientAcuityTier.CRITICAL_RED
         elif "refill" in body_lower or "appointment" in body_lower:
@@ -76,11 +72,11 @@ class LextitFailsafeExpertSystem:
                 for rx in payload.proposed_prescriptions:
                     if rx.upper() in banned_drugs:
                         evaluation["status"] = "LOCK_TRANSACTION_CRITICAL_RISK"
-                        evaluation["flags"].append(f"FATAL REACTION RISK: Intended drug [{rx}] violates [{fam}] anaphylaxis constraint.")
+                        evaluation["flags"].append(f"FATAL REACTION INTERCEPTED: Intended drug [{rx}] violates [{fam}] anaphylaxis constraint.")
 
         return evaluation
 
-@app.post("/api/v4/patient/portal/message", status_code=status.HTTP_201_CREATED)
+@app.post("/api/v5/patient/portal/message", status_code=status.HTTP_201_CREATED)
 async def ingest_portal_patient_message(message: PatientPortalMessageInput):
     expert_system = LextitFailsafeExpertSystem()
     safety_report = expert_system.evaluate_omissions_and_safety(message)

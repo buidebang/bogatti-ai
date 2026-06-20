@@ -1,0 +1,40 @@
+{
+  "lextit_master_manifest": {
+    "platform_version": "3.0.0-PROD-EXTENDED",
+    "deployment_origin": "https://lextit.com",
+    "system_components": {
+      "anti_omission_engine": {
+        "status": "ENFORCED",
+        "validation_model": "Pydantic_Instructor_V3",
+        "monitored_negatives_array": ["denies_chest_pain", "denies_shortness_of_breath", "no_known_drug_allergies"],
+        "malpractice_safety_action": "LOCK_POST_AND_ALERT_CLINICIAN"
+      },
+      "inbox_triage_router": {
+        "acuity_scoring_engine": "Realtime_Semantic_Parser",
+        "escalation_routing": {
+          "critical_symptom_push_alerts": true,
+          "automated_billing_event_generation": "CPT_CODE_MAPPED"
+        }
+      },
+      "site_performance_shield": {
+        "database_revision_purge_cron": "ACTIVE_EVERY_6_HOURS",
+        "sql_cleanup_queries": [
+          "DELETE FROM wp_posts WHERE post_type = 'revision';",
+          "OPTIMIZE TABLE wp_posts, wp_postmeta;"
+        ],
+        "edge_object_cache_driver": "Redis_Distributed_Cache_Pool"
+      },
+      "telemetry_and_tracking": {
+        "ga4_measurement_id_extract": "AUTO_POLL_STREAM_METADATA",
+        "global_tag_injection_location": "wp_head_action_anchor",
+        "custom_conversion_events": [
+          { "event_name": "simulator_download_click", "element_target_id": "lextit-download-node" }
+        ]
+      },
+      "search_infrastructure": {
+        "programmable_search_engine_id": "GLOBAL_CLUSTER_ISOLATED_ID",
+        "widget_swap_behavior": "remove_default_search_box_inject_cse_html_layout"
+      }
+    }
+  }
+}
