@@ -4,6 +4,40 @@ from typing import Dict, Any
 from sqlalchemy import create_engine, text
 import redis
 
+class LextitWordPressAutomationBridge:
+    """
+    Automates data publishing routines into Gutenberg content elements,
+    configuring focus fields to preserve layout structure.
+    """
+    def __init__(self, wp_root_endpoint: str, application_token: str):
+        self.endpoint = f"{wp_root_endpoint}/wp-json/wp/v2/posts"
+        self.auth_headers = {
+            "Authorization": f"Bearer {application_token}",
+            "Content-Type": "application/json"
+        }
+
+    def deploy_validated_gutenberg_post(self, content_package: Dict[str, Any]) -> bool:
+        # Construct clean layout matrices to avoid runtime layout shifts
+        compiled_block_markup = (
+            f"<h2>Lextit Growth & Conversion Insights</h2>\n"
+            f"<p>{content_package['marketing_copy_body']}</p>\n"
+            f"<blockquote class='wp-block-quote'><p>{content_package['authority_metric_callout']}</p>"
+            f"<cite>Lextit Enterprise Strategy Core</cite></blockquote>\n"
+        )
+
+        request_body = {
+            "title": content_package.get("headline_title", "Automated Commercial Expansion Matrix"),
+            "content": compiled_block_markup,
+            "status": "publish",
+            "meta": {
+                "rank_math_focus_keyword": content_package.get("focus_keyword", ""),
+                "rank_math_description": content_package.get("meta_description", "")
+            }
+        }
+
+        response = requests.post(self.endpoint, json=request_body, headers=self.auth_headers, timeout=12)
+        return response.status_code == 201
+
 class LextitWordPressPublisher:
     """
     Handles the asynchronous delivery of AI-generated marketing funnels
@@ -113,7 +147,7 @@ class LextitDatabaseTuningEngine:
         """
         # Targeted clean queries mapping to Database Cleanup > Optimize Tables workflows
         purge_query = text("DELETE FROM wp_posts WHERE post_type = 'revision';")
-        optimize_query = text("OPTIMIZE TABLE wp_posts;")
+        optimize_query = text("OPTIMIZE TABLE wp_posts, wp_postmeta;")
 
         execution_summary = {"purged_revisions": 0, "status": "FAILED"}
 
