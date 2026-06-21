@@ -22,7 +22,6 @@ playwright
 undetected-chromedriver
 scrapy
 scrapy-playwright
-curl-impersonate
 openai-whisper
 google-generativeai
 ollama
@@ -47,4 +46,3 @@ scikit-learn
 fhirclient
 google-analytics-data
 wordpress-api
-pyknow
