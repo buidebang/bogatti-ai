@@ -81,6 +81,12 @@ async def ingest_portal_patient_message(message: PatientPortalMessageInput):
     expert_system = LextitFailsafeExpertSystem()
     safety_report = expert_system.evaluate_omissions_and_safety(message)
 
+    if safety_report["status"] == "FAILED_SAFETY_VALIDATION":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail={"error_code": "FAILED_SAFETY_VALIDATION", "remediation_payload": safety_report["flags"]}
+        )
+
     if safety_report["status"] == "LOCK_TRANSACTION_CRITICAL_RISK":
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
